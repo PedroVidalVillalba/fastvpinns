@@ -29,6 +29,8 @@ fastvpinns.egg-info/
 examples/**/output/
 examples/**/output_*
 examples/**/__pycache__/
+experiments/**/output/
+experiments/**/__pycache__/
 
 
 # pytest 
@@ -41,4 +43,5 @@ sensor_points.png
 # examples/**/*.png # as the README.md uses png image files
 examples/**/sensor_points.png
 
-
+# Virtual environment
+venv/

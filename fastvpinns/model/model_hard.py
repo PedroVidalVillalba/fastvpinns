@@ -102,8 +102,8 @@ class DenseModel_Hard(tf.keras.Model):
 
         self.input_tensors_list = input_tensors_list
         self.input_tensor = copy.deepcopy(input_tensors_list[0])
-        self.dirichlet_input = copy.deepcopy(input_tensors_list[1])
-        self.dirichlet_actual = copy.deepcopy(input_tensors_list[2])
+        # self.dirichlet_input = copy.deepcopy(input_tensors_list[1])
+        # self.dirichlet_actual = copy.deepcopy(input_tensors_list[2])
 
         self.params_dict = params_dict
 
@@ -133,12 +133,12 @@ class DenseModel_Hard(tf.keras.Model):
         print(
             f"| {'pre_multiplier_val':<25} | {str(self.pre_multiplier_val.shape):<25} | {self.pre_multiplier_val.dtype}"
         )
-        print(
-            f"| {'dirichlet_input':<25} | {str(self.dirichlet_input.shape):<25} | {self.dirichlet_input.dtype}"
-        )
-        print(
-            f"| {'dirichlet_actual':<25} | {str(self.dirichlet_actual.shape):<25} | {self.dirichlet_actual.dtype}"
-        )
+        # print(
+        #     f"| {'dirichlet_input':<25} | {str(self.dirichlet_input.shape):<25} | {self.dirichlet_input.dtype}"
+        # )
+        # print(
+        #     f"| {'dirichlet_actual':<25} | {str(self.dirichlet_actual.shape):<25} | {self.dirichlet_actual.dtype}"
+        # )
         print(f"{'-'*74}")
 
         self.n_cells = params_dict["n_cells"]
