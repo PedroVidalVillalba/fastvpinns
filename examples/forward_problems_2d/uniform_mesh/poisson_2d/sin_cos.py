@@ -9,7 +9,7 @@ def left_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = 0.0
+    val = - np.exp(-y*y) * np.cos(2 * np.pi * y)
     return np.ones_like(x) * val
 
 
@@ -17,7 +17,7 @@ def right_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = 0.0
+    val = np.exp(-y*y) * np.cos(2 * np.pi * y)
     return np.ones_like(x) * val
 
 
@@ -25,7 +25,7 @@ def top_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = 0.0
+    val = x * np.exp(-x*x)
     return np.ones_like(x) * val
 
 
@@ -33,7 +33,7 @@ def bottom_boundary(x, y):
     """
     This function will return the boundary value for given component of a boundary
     """
-    val = 0.0
+    val = x * np.exp(-x*x) 
     return np.ones_like(x) * val
 
 
@@ -45,9 +45,12 @@ def rhs(x, y):
     # f_temp = 1
     # For a Laplace Equation, Make the f_temp = np.ones_like(x) * 0.0
 
-    omegaX = 4.0 * np.pi
-    omegaY = 4.0 * np.pi
-    f_temp = -2.0 * (omegaX**2) * (np.sin(omegaX * x) * np.sin(omegaY * y))
+#     omegaX = 4.0 * np.pi
+#     omegaY = 4.0 * np.pi
+#     f_temp = -2.0 * (omegaX**2) * (np.sin(omegaX * x) * np.sin(omegaY * y))
+
+    f_temp = - np.exp(- x*x * y*y) * (-2 * x * (2 * np.pi**2  + x**2 + 3 * y**2 - 2 * x**4 * y**2 - 2 * x**2 * y**4) * np.cos(2 * np.pi * y) 
+        + 8 * np.pi * x**3 * y * np.sin(2 * np.pi * y))
     
     return f_temp
 
@@ -59,9 +62,11 @@ def exact_solution(x, y):
     # If the exact Solution does not have an analytical expression, leave the value as 0(zero)
     # it can be set using `np.ones_like(x) * 0.0` and then ignore the errors and the error plots generated. 
 
-    omegaX = 4.0 * np.pi
-    omegaY = 4.0 * np.pi
-    val = -1.0 * np.sin(omegaX * x) * np.sin(omegaY * y)
+    # omegaX = 4.0 * np.pi
+    # omegaY = 4.0 * np.pi
+    # val = -1.0 * np.sin(omegaX * x) * np.sin(omegaY * y)
+
+    val = x * np.exp(- x*x * y*y) * np.cos(2 * np.pi * y)
 
     return val
 

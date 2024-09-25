@@ -24,7 +24,7 @@ from fastvpinns.utils.compute_utils import compute_errors_combined
 from fastvpinns.utils.print_utils import print_table
 
 # import the example file
-from sin_cos import *
+from force_and_exact import *
 
 # import all files from utility
 from utility import *
@@ -97,9 +97,6 @@ if __name__ == "__main__":
     if not folder.exists():
         folder.mkdir(parents=True, exist_ok=True)
 
-    # get the boundary function dictionary from example file
-    bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bound_cond_dict()
-
     # Initiate a Geometry_2D object
     domain = Geometry_2D(
         i_mesh_type, i_mesh_generation_method, i_n_test_points_x, i_n_test_points_y, i_output_path
@@ -115,7 +112,10 @@ if __name__ == "__main__":
     )
 
     # get the boundary function dictionary from example file
-    bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bound_cond_dict()
+    zero_fn = lambda x, y : 0.0
+    bound_function_dict = {1000: zero_fn, 1001: zero_fn, 1002: zero_fn, 1003: zero_fn}
+    bound_condition_dict = {1000: "dirichlet", 1001: "dirichlet", 1002: "dirichlet", 1003: "dirichlet"}
+    # bound_function_dict, bound_condition_dict = get_boundary_function_dict(), get_bound_cond_dict()
 
     fespace = Fespace2D(
         mesh=domain.mesh,
@@ -148,28 +148,27 @@ if __name__ == "__main__":
     # and convert them into tensors of desired dtype
     bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(get_bilinear_params_dict)
 
-    # Setup the hard constraints
-    @tf.function
-    def apply_hard_boundary_constraints(inputs, x):
-        """This method applies hard boundary constraints to the model.
-        :param inputs: Input tensor
-        :type inputs: tf.Tensor
-        :param x: Output tensor from the model
-        :type x: tf.Tensor
-        :return: Output tensor with hard boundary constraints
-        :rtype: tf.Tensor
-        """
-        ansatz = (
-            tf.tanh(4.0 * np.pi * inputs[:, 0:1])
-            * tf.tanh(4.0 * np.pi * inputs[:, 1:2])
-            * tf.tanh(4.0 * np.pi * (inputs[:, 0:1] - 1.0))
-            * tf.tanh(4.0 * np.pi * (inputs[:, 1:2] - 1.0))
-        )
-        ansatz = tf.cast(ansatz, i_dtype)
-        return ansatz * x
+    # # Setup the hard constraints
+    # @tf.function
+    # def apply_hard_boundary_constraints(inputs, x):
+    #     """This method applies hard boundary constraints to the model.
+    #     :param inputs: Input tensor
+    #     :type inputs: tf.Tensor
+    #     :param x: Output tensor from the model
+    #     :type x: tf.Tensor
+    #     :return: Output tensor with hard boundary constraints
+    #     :rtype: tf.Tensor
+    #     """
+    #     ansatz = (
+    #         tf.tanh(4.0 * np.pi * inputs[:, 0:1])
+    #         * tf.tanh(4.0 * np.pi * inputs[:, 1:2])
+    #         * tf.tanh(4.0 * np.pi * (inputs[:, 0:1] - 1.0))
+    #         * tf.tanh(4.0 * np.pi * (inputs[:, 1:2] - 1.0))
+    #     )
+    #     return ansatz * x
 
     model = DenseModel_Hard(
-        layer_dims=[2, 30, 30, 30, 1],
+        layer_dims=i_model_architecture,
         learning_rate_dict=i_learning_rate_dict,
         params_dict=params_dict,
         loss_function=pde_loss_poisson,

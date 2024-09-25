@@ -151,7 +151,7 @@ if __name__ == "__main__":
     bilinear_params_dict = datahandler.get_bilinear_params_dict_as_tensors(get_bilinear_params_dict)
 
     model = DenseModel(
-        layer_dims=[2, 30, 30, 30, 1],
+        layer_dims=i_model_architecture,
         learning_rate_dict=i_learning_rate_dict,
         params_dict=params_dict,
         loss_function=pde_loss_poisson,

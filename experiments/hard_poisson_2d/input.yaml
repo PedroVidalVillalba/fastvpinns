@@ -23,9 +23,9 @@ geometry:
 
   
 fe:
-  fe_order: 8 # Order of the finite element basis functions.
+  fe_order: 2 # Order of the finite element basis functions.
   fe_type: "legendre"  # Type of finite element basis functions. Can be "jacobi" or other supported types.
-  quad_order: 4  # Order of the quadrature rule.
+  quad_order: 6  # Order of the quadrature rule.
   quad_type: "gauss-jacobi"  # Type of quadrature rule. Can be "gauss-jacobi" or other supported types.
 
 
